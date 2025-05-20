@@ -1,0 +1,165 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+// Enhanced Header
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: white;
+
+  .toolbar {
+    box-shadow: none;
+  }
+
+  .toolbar-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .logo-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 0.5rem;
+
+    .header-btn {
+      color: white !important;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+
+      mat-icon {
+        color: white;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: white;
+      }
+    }
+
+    button {
+      color: white;
+      font-weight: 500;
+    }
+  }
+}
+
+.header-banner {
+  background: #3f51b5;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: white;
+
+  .banner-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .banner-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .banner-description {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+// Main Content
+.content-wrapper {
+  flex: 1;
+  padding: 2rem 1rem;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+// Footer
+.app-footer {
+  background: #3f51b5;
+  color: white;
+  padding: 1.5rem 1rem;
+  margin-top: 3rem;
+
+  .footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+
+    p {
+      margin: 0;
+      color: #ecf0f1;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .header-banner {
+    padding: 1.5rem 1rem;
+
+    .banner-title {
+      font-size: 1.8rem;
+    }
+
+    .banner-description {
+      font-size: 1rem;
+    }
+  }
+
+  .content-wrapper {
+    padding: 1rem 0.5rem;
+  }
+
+  .app-footer {
+    .footer-content {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .header-actions {
+    display: none !important;
+  }
+}

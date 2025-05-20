@@ -1,0 +1,39 @@
+<div class="app-container">
+  <!-- Header -->
+  <header class="app-header">
+    <mat-toolbar color="primary" class="toolbar">
+      <div class="toolbar-content">
+        <div class="logo-section">
+          <mat-icon class="logo-icon">table_chart</mat-icon>
+          <span class="title">{{ title() }}</span>
+        </div>
+        <span class="spacer"></span>
+        <div class="header-actions">
+          <button mat-button class="header-btn" (click)="openHelp()">
+            <mat-icon>help_outline</mat-icon>
+            Help
+          </button>
+          <button mat-raised-button color="accent" (click)="scrollToUpload()">
+            <mat-icon>cloud_upload</mat-icon>
+            Upload Data
+          </button>
+        </div>
+      </div>
+    </mat-toolbar>
+  </header>
+
+  <!-- Main Content -->
+  <main class="content-wrapper">
+    <app-file-upload></app-file-upload>
+    <app-dynamic-table></app-dynamic-table>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <p>Built using Angular | &copy; 2026 Jaskirat</p>
+    </div>
+  </footer>
+</div>
+
+<router-outlet />
