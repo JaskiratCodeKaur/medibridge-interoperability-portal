@@ -1,0 +1,181 @@
+.upload-card {
+  max-width: 600px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.upload-container {
+  text-align: center;
+  padding: 2rem;
+  border: 3px dashed #bbb;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: white;
+
+  &:hover {
+    border-color: #3f51b5;
+    background-color: #e8eaf6;
+    transform: translateY(-2px);
+  }
+}
+
+.upload-icon {
+  mat-icon {
+    font-size: 72px;
+    width: 72px;
+    height: 72px;
+    color: #3f51b5;
+  }
+}
+
+h2 {
+  margin: 1rem 0 0.5rem;
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 600;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.upload-description {
+  color: #34495e;
+  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.6;
+}
+
+button {
+  margin: 1rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 2rem;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #3f51b5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  mat-icon {
+    color: white;
+  }
+
+  span {
+    font-weight: 600;
+    color: white;
+    font-size: 1rem;
+  }
+
+  button {
+    margin: 0;
+    color: white;
+  }
+}
+
+.processing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #e3f2fd;
+  border-radius: 8px;
+  color: #1976d2;
+  font-weight: 600;
+  font-size: 1rem;
+
+  mat-icon {
+    color: #1976d2;
+    &.spinning {
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #ffebee;
+  border-radius: 8px;
+  color: #d32f2f;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 2px solid #ef9a9a;
+
+  mat-icon {
+    color: #d32f2f;
+  }
+}
+
+.text-input-container {
+  text-align: center;
+  padding: 2rem;
+
+  .upload-icon mat-icon {
+    font-size: 72px;
+    width: 72px;
+    height: 72px;
+    color: #667eea;
+  }
+
+  h2 {
+    margin: 1rem 0 0.5rem;
+    color: #2c3e50;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+
+  .upload-description {
+    color: #34495e;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+  }
+
+  .json-textarea {
+    width: 100%;
+    margin-bottom: 1rem;
+
+    textarea {
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      margin: 0;
+    }
+  }
+}
+
+::ng-deep .mat-mdc-tab-label {
+  font-size: 1rem;
+  font-weight: 500;
+}

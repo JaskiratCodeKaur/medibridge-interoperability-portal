@@ -1,0 +1,115 @@
+<mat-card class="upload-card">
+  <mat-card-content>
+    <mat-tab-group>
+      <!-- File Upload Tab -->
+      <mat-tab label="Upload File">
+        <div class="upload-container" 
+             (drop)="onDrop($event)" 
+             (dragover)="onDragOver($event)">
+          
+          <div class="upload-icon">
+            <mat-icon>cloud_upload</mat-icon>
+          </div>
+
+          <h2>Upload JSON File</h2>
+          <p class="upload-description">
+            Drag and drop your JSON file here, or click to browse
+          </p>
+
+          <input 
+            type="file" 
+            #fileInput
+            accept=".json"
+            (change)="onFileSelected($event)"
+            style="display: none">
+
+          <button 
+            mat-raised-button 
+            color="primary"
+            (click)="fileInput.click()"
+            [disabled]="isProcessing">
+            <mat-icon>folder_open</mat-icon>
+            Choose File
+          </button>
+
+          <div class="file-info" *ngIf="fileName && !jsonText">
+            <mat-icon>description</mat-icon>
+            <span>{{ fileName }}</span>
+            <button mat-icon-button (click)="clearFile()" *ngIf="!isProcessing">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+
+          <div class="processing" *ngIf="isProcessing">
+            <mat-icon class="spinning">refresh</mat-icon>
+            <span>Processing...</span>
+            <button mat-button (click)="isProcessing = false" style="margin-left: 10px; color: red;">
+              Cancel
+            </button>
+          </div>
+
+          <div class="error-message" *ngIf="error">
+            <mat-icon>error</mat-icon>
+            <span>{{ error }}</span>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Text Input Tab -->
+      <mat-tab label="Paste JSON">
+        <div class="text-input-container">
+          <div class="upload-icon">
+            <mat-icon>code</mat-icon>
+          </div>
+
+          <h2>Paste JSON Data</h2>
+          <p class="upload-description">
+            Enter or paste your JSON data below
+          </p>
+
+          <mat-form-field appearance="outline" class="json-textarea">
+            <mat-label>JSON Data</mat-label>
+            <textarea 
+              matInput 
+              [(ngModel)]="jsonText"
+              placeholder='Example: [{"id": 1, "name": "John"}, {"id": 2, "name": "Jane"}]'
+              rows="12"
+              [disabled]="isProcessing"></textarea>
+          </mat-form-field>
+
+          <div class="button-group">
+            <button 
+              mat-raised-button 
+              color="primary"
+              (click)="processTextInput()"
+              [disabled]="isProcessing || !jsonText.trim()">
+              <mat-icon>table_chart</mat-icon>
+              Generate Table
+            </button>
+
+            <button 
+              mat-button 
+              (click)="clearTextInput()"
+              [disabled]="isProcessing">
+              <mat-icon>clear</mat-icon>
+              Clear
+            </button>
+          </div>
+
+          <div class="processing" *ngIf="isProcessing">
+            <mat-icon class="spinning">refresh</mat-icon>
+            <span>Processing...</span>
+            <button mat-button (click)="isProcessing = false" style="margin-left: 10px; color: red;">
+              Cancel
+            </button>
+          </div>
+
+          <div class="error-message" *ngIf="error">
+            <mat-icon>error</mat-icon>
+            <span>{{ error }}</span>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>
