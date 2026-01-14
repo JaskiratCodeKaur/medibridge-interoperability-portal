@@ -1,0 +1,149 @@
+<mat-card class="fhir-card" *ngIf="conversionResult">
+  <mat-card-header>
+    <mat-icon [class.success-icon]="isSuccess" [class.error-icon]="!isSuccess">
+      {{ isSuccess ? 'check_circle' : 'error' }}
+    </mat-icon>
+    <mat-card-title>FHIR R4 Patient Resource</mat-card-title>
+    <mat-card-subtitle>
+      {{ isSuccess ? 'Successfully converted to HL7 FHIR standard' : 'Conversion failed' }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- Success View -->
+    <div *ngIf="isSuccess && fhirPatient" class="fhir-content">
+      <!-- Key Patient Information -->
+      <div class="patient-summary">
+        <h3>Patient Summary</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Resource ID:</label>
+            <span>{{ fhirPatient.id }}</span>
+          </div>
+          <div class="info-item">
+            <label>Name:</label>
+            <span>{{ getNameDisplay() }}</span>
+          </div>
+          <div class="info-item">
+            <label>Gender:</label>
+            <span>{{ fhirPatient.gender || 'N/A' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Birth Date:</label>
+            <span>{{ fhirPatient.birthDate || 'N/A' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Active:</label>
+            <mat-chip-set>
+              <mat-chip [highlighted]="fhirPatient.active">
+                {{ fhirPatient.active === undefined ? 'N/A' : (fhirPatient.active ? 'Yes' : 'No') }}
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Information -->
+      <mat-expansion-panel class="section-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>contact_phone</mat-icon>
+            Contact Information
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Phone:</label>
+            <span>{{ getTelecomDisplay('phone') }}</span>
+          </div>
+          <div class="info-item">
+            <label>Email:</label>
+            <span>{{ getTelecomDisplay('email') }}</span>
+          </div>
+          <div class="info-item full-width">
+            <label>Address:</label>
+            <span>{{ getAddressDisplay() }}</span>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <!-- Identifiers -->
+      <mat-expansion-panel class="section-panel" *ngIf="getIdentifierDisplay().length > 0">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>badge</mat-icon>
+            Patient Identifiers
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="identifiers-list">
+          <mat-chip-set>
+            <mat-chip *ngFor="let id of getIdentifierDisplay()">
+              {{ id }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+      </mat-expansion-panel>
+
+      <!-- Mapping Log -->
+      <mat-expansion-panel class="section-panel" *ngIf="conversionResult.mappingLog">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>map</mat-icon>
+            Field Mapping Log
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ conversionResult.mappingLog.length }} mappings performed
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="mapping-log">
+          <div *ngFor="let log of conversionResult.mappingLog" class="log-entry">
+            <mat-icon class="log-icon">arrow_forward</mat-icon>
+            <span>{{ log }}</span>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <!-- Raw FHIR JSON -->
+      <mat-expansion-panel class="section-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>code</mat-icon>
+            Raw FHIR JSON
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="json-viewer">
+          <pre>{{ fhirPatient | json }}</pre>
+        </div>
+      </mat-expansion-panel>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button mat-raised-button color="primary" (click)="copyToClipboard()">
+          <mat-icon>content_copy</mat-icon>
+          Copy JSON
+        </button>
+        <button mat-raised-button color="accent" (click)="downloadFHIR()">
+          <mat-icon>download</mat-icon>
+          Download FHIR
+        </button>
+      </div>
+    </div>
+
+    <!-- Error View -->
+    <div *ngIf="!isSuccess" class="error-content">
+      <mat-icon class="large-error-icon">warning</mat-icon>
+      <h3>Conversion Failed</h3>
+      <div class="error-list" *ngIf="conversionResult.errors">
+        <p *ngFor="let error of conversionResult.errors" class="error-message">
+          {{ error }}
+        </p>
+      </div>
+      <div *ngIf="conversionResult.mappingLog && conversionResult.mappingLog.length > 0">
+        <h4>Partial Mapping Information:</h4>
+        <div *ngFor="let log of conversionResult.mappingLog" class="log-entry">
+          {{ log }}
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
