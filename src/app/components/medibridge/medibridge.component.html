@@ -1,0 +1,154 @@
+<div class="medibridge-container">
+  <!-- Header -->
+  <div class="medibridge-header">
+    <div class="header-content">
+      <mat-icon class="logo-icon">biotech</mat-icon>
+      <div class="header-text">
+        <h1>MediBridge Interoperability Portal</h1>
+        <p>Transform Raw Data → HL7 FHIR Standards + PHIPA Compliance Validation</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Cards -->
+  <div class="feature-cards">
+    <mat-card class="feature-card">
+      <mat-icon>transform</mat-icon>
+      <h3>FHIR Conversion</h3>
+      <p>Automatically maps generic JSON to HL7 FHIR R4 Patient resources</p>
+    </mat-card>
+    <mat-card class="feature-card">
+      <mat-icon>security</mat-icon>
+      <h3>PHIPA Validation</h3>
+      <p>Scans for sensitive data and compliance violations (SIN, Credit Cards, etc.)</p>
+    </mat-card>
+    <mat-card class="feature-card">
+      <mat-icon>assessment</mat-icon>
+      <h3>Quality Scoring</h3>
+      <p>Generates data quality scores based on completeness and compliance</p>
+    </mat-card>
+  </div>
+
+  <!-- Upload Section -->
+  <mat-card class="upload-section" *ngIf="!result">
+    <mat-card-content>
+      <mat-tab-group>
+        <mat-tab label="Upload JSON File">
+          <div class="upload-tab-content">
+            <div 
+              class="drop-zone"
+              (drop)="onDrop($event)"
+              (dragover)="onDragOver($event)">
+              <mat-icon class="upload-icon">cloud_upload</mat-icon>
+              <h2>Drop Patient Data Here</h2>
+              <p>Upload a JSON file containing patient information</p>
+              <input 
+                type="file" 
+                #fileInput
+                accept=".json"
+                (change)="onFileChange($event)"
+                style="display: none">
+              <button mat-raised-button color="primary" (click)="fileInput.click()">
+                <mat-icon>folder_open</mat-icon>
+                Browse Files
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Paste JSON">
+          <div class="paste-tab-content">
+            <textarea 
+              #jsonTextarea
+              class="json-textarea"
+              placeholder='Paste your JSON here, e.g., {"firstName": "John", "lastName": "Doe", "birthDate": "1990-01-15"}'
+              rows="10"></textarea>
+            <button 
+              mat-raised-button 
+              color="primary"
+              (click)="onTextSubmitted(jsonTextarea.value)">
+              <mat-icon>send</mat-icon>
+              Process JSON
+            </button>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Processing Indicator -->
+  <div *ngIf="isProcessing" class="processing-indicator">
+    <mat-card>
+      <mat-card-content>
+        <mat-icon class="spinning">sync</mat-icon>
+        <h3>Processing Patient Data...</h3>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <p>Converting to FHIR and validating PHIPA compliance</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Results Section -->
+  <div *ngIf="result && !isProcessing" class="results-section">
+    <!-- Summary Dashboard -->
+    <mat-card class="summary-card">
+      <mat-card-header>
+        <mat-icon class="summary-icon">dashboard</mat-icon>
+        <mat-card-title>Processing Summary</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <label>Source:</label>
+            <span>{{ uploadedFileName }}</span>
+          </div>
+          <div class="summary-item">
+            <label>Processed:</label>
+            <span>{{ result.processedAt | date:'medium' }}</span>
+          </div>
+          <div class="summary-item">
+            <label>FHIR Conversion:</label>
+            <mat-icon [class.success]="result.fhirConversion.success" [class.error]="!result.fhirConversion.success">
+              {{ result.fhirConversion.success ? 'check_circle' : 'error' }}
+            </mat-icon>
+            <span>{{ result.fhirConversion.success ? 'Success' : 'Failed' }}</span>
+          </div>
+          <div class="summary-item">
+            <label>PHIPA Compliance:</label>
+            <mat-icon [class.success]="result.phipaValidation.isCompliant" [class.error]="!result.phipaValidation.isCompliant">
+              {{ result.phipaValidation.isCompliant ? 'verified_user' : 'security' }}
+            </mat-icon>
+            <span>{{ result.phipaValidation.isCompliant ? 'Compliant' : 'Non-Compliant' }}</span>
+          </div>
+          <div class="summary-item quality-score">
+            <label>Data Quality Score:</label>
+            <div class="score-display">
+              <div class="score-bar">
+                <div 
+                  class="score-fill" 
+                  [style.width.%]="result.dataQualityScore"
+                  [style.background-color]="getQualityColor()">
+                </div>
+              </div>
+              <span class="score-value" [style.color]="getQualityColor()">
+                {{ result.dataQualityScore }}/100
+              </span>
+            </div>
+            <p class="quality-assessment">{{ getQualityAssessment() }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="accent" (click)="clearResults()">
+          <mat-icon>refresh</mat-icon>
+          Process New Data
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- FHIR Results -->
+    <app-fhir-display [conversionResult]="result.fhirConversion"></app-fhir-display>
+
+    <!-- Compliance Results -->
+    <app-compliance-display [validationResult]="result.phipaValidation"></app-compliance-display>
+  </div>
+</div>
