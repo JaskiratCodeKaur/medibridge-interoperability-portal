@@ -1,0 +1,18 @@
+{
+  "patient_id": "P003",
+  "given": "Robert",
+  "family": "Brown",
+  "date_of_birth": "1982-07-18",
+  "gender": "male",
+  "phone_number": "613-555-2468",
+  "email": "robert.brown@example.com",
+  "line": ["100 Queen Street", "Apt 5B"],
+  "city": "Kingston",
+  "province": "Ontario",
+  "postal_code": "K7L 2Y8",
+  "country": "Canada",
+  "mrn": "MRN567890",
+  "ohip": "1122334455",
+  "passport": "AB123456",
+  "status": "active"
+}

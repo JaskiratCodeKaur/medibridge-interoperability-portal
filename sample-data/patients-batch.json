@@ -1,0 +1,32 @@
+[
+  {
+    "id": "P001",
+    "name": "Michael Johnson",
+    "dob": "1978-03-10",
+    "sex": "male",
+    "telephone": "905-555-4321",
+    "emailAddress": "michael.j@example.com",
+    "streetAddress": "789 Elm Street",
+    "city": "Mississauga",
+    "state": "Ontario",
+    "zip": "L5B 3C4",
+    "country": "Canada",
+    "medicalRecordNumber": "MRN345678",
+    "isActive": true
+  },
+  {
+    "id": "P002",
+    "name": "Sarah Williams",
+    "dob": "1995-12-05",
+    "sex": "female",
+    "telephone": "416-555-7890",
+    "emailAddress": "sarah.w@example.com",
+    "streetAddress": "321 Pine Road",
+    "city": "Toronto",
+    "state": "Ontario",
+    "zip": "M4Y 1W5",
+    "country": "Canada",
+    "medicalRecordNumber": "MRN456789",
+    "isActive": true
+  }
+]
