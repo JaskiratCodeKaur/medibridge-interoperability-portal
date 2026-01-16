@@ -4,11 +4,9 @@ import { RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
-import { FileUploadComponent } from './components/file-upload/file-upload.component';
-import { DynamicTableComponent } from './components/dynamic-table/dynamic-table.component';
-import { HelpDialogComponent } from './components/help-dialog/help-dialog.component';
+import { MediBridgeComponent } from './components/medibridge/medibridge.component';
 
 @Component({
   selector: 'app-root',
@@ -20,22 +18,16 @@ import { HelpDialogComponent } from './components/help-dialog/help-dialog.compon
     MatButtonModule,
     MatDialogModule,
     MatCardModule,
-    FileUploadComponent,
-    DynamicTableComponent
+    MediBridgeComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('Table Builder');
-
-  constructor(private dialog: MatDialog) {}
+  protected readonly title = signal('Healthcare Interoperability Suite');
 
   openHelp(): void {
-    this.dialog.open(HelpDialogComponent, {
-      width: '600px',
-      panelClass: 'help-dialog'
-    });
+    alert('MediBridge Interoperability Portal\n\nUpload patient data in JSON format to:\n• Convert to HL7 FHIR R4 standard\n• Assess data quality\n\nSample files available in /sample-data/ folder.');
   }
 
   scrollToUpload(): void {
