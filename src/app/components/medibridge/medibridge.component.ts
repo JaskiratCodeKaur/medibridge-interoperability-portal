@@ -36,6 +36,13 @@ export class MediBridgeComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
+      
+      // Validate file type
+      if (!file.name.endsWith('.json')) {
+        alert('Please upload a valid JSON file');
+        return;
+      }
+      
       this.uploadedFileName = file.name;
       this.readFile(file);
     }
@@ -47,6 +54,13 @@ export class MediBridgeComponent {
     
     if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
       const file = event.dataTransfer.files[0];
+      
+      // Validate file type
+      if (!file.name.endsWith('.json')) {
+        alert('Please drop a valid JSON file');
+        return;
+      }
+      
       this.uploadedFileName = file.name;
       this.readFile(file);
     }
