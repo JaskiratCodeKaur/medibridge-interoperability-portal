@@ -1,0 +1,194 @@
+<mat-card class="compliance-card" *ngIf="validationResult" [class.compliant]="isCompliant" [class.non-compliant]="!isCompliant">
+  <mat-card-header>
+    <mat-icon [class.success-icon]="isCompliant" [class.error-icon]="!isCompliant">
+      {{ isCompliant ? 'verified_user' : 'security' }}
+    </mat-icon>
+    <mat-card-title>PHIPA Compliance Assessment</mat-card-title>
+    <mat-card-subtitle>
+      Personal Health Information Protection Act (Ontario, Canada)
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- Compliance Status Banner -->
+    <div class="status-banner" [class.compliant]="isCompliant" [class.non-compliant]="!isCompliant">
+      <div class="status-content">
+        <mat-icon class="status-icon">{{ isCompliant ? 'check_circle' : 'cancel' }}</mat-icon>
+        <div class="status-text">
+          <h3>{{ isCompliant ? 'COMPLIANT' : 'NON-COMPLIANT' }}</h3>
+          <p>{{ validationResult.summary }}</p>
+          <span class="scan-date">Scanned: {{ validationResult.scanDate | date:'medium' }}</span>
+        </div>
+      </div>
+      <div class="compliance-score">
+        <div class="score-circle" [style.border-color]="getScoreColor()">
+          <span class="score-value" [style.color]="getScoreColor()">{{ getComplianceScore() }}</span>
+          <span class="score-label">Score</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Dashboard -->
+    <div class="stats-dashboard">
+      <div class="stat-card" [class.has-issues]="criticalViolations.length > 0">
+        <mat-icon class="stat-icon critical">error</mat-icon>
+        <div class="stat-content">
+          <div class="stat-number">{{ criticalViolations.length }}</div>
+          <div class="stat-label">Critical</div>
+        </div>
+      </div>
+      <div class="stat-card" [class.has-issues]="highViolations.length > 0">
+        <mat-icon class="stat-icon high">warning</mat-icon>
+        <div class="stat-content">
+          <div class="stat-number">{{ highViolations.length }}</div>
+          <div class="stat-label">High</div>
+        </div>
+      </div>
+      <div class="stat-card" [class.has-issues]="mediumViolations.length > 0">
+        <mat-icon class="stat-icon medium">info</mat-icon>
+        <div class="stat-content">
+          <div class="stat-number">{{ mediumViolations.length }}</div>
+          <div class="stat-label">Medium</div>
+        </div>
+      </div>
+      <div class="stat-card" [class.has-issues]="validationResult.warnings.length > 0">
+        <mat-icon class="stat-icon warning-icon">report_problem</mat-icon>
+        <div class="stat-content">
+          <div class="stat-number">{{ validationResult.warnings.length }}</div>
+          <div class="stat-label">Warnings</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Violations List -->
+    <div *ngIf="validationResult.violations.length > 0" class="violations-section">
+      <h3>
+        <mat-icon>gavel</mat-icon>
+        Compliance Violations ({{ validationResult.violations.length }})
+      </h3>
+
+      <!-- Critical Violations -->
+      <mat-expansion-panel 
+        *ngIf="criticalViolations.length > 0" 
+        class="violation-panel critical"
+        [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>error</mat-icon>
+            Critical Violations
+            <mat-chip class="severity-badge critical">{{ criticalViolations.length }}</mat-chip>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="violations-list">
+          <div *ngFor="let violation of criticalViolations" class="violation-item critical">
+            <div class="violation-header">
+              <mat-icon class="violation-icon">{{ getSeverityIcon(violation.severity) }}</mat-icon>
+              <div class="violation-info">
+                <h4>{{ violation.violationType }}</h4>
+                <span class="field-path">Field: {{ violation.field }}</span>
+              </div>
+            </div>
+            <p class="violation-description">{{ violation.description }}</p>
+            <div class="violation-value" *ngIf="violation.value">
+              <strong>Detected Value:</strong> <code>{{ violation.value }}</code>
+            </div>
+            <div class="violation-recommendation">
+              <mat-icon>lightbulb</mat-icon>
+              <span>{{ violation.recommendation }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <!-- High Priority Violations -->
+      <mat-expansion-panel 
+        *ngIf="highViolations.length > 0" 
+        class="violation-panel high">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>warning</mat-icon>
+            High Priority Violations
+            <mat-chip class="severity-badge high">{{ highViolations.length }}</mat-chip>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="violations-list">
+          <div *ngFor="let violation of highViolations" class="violation-item high">
+            <div class="violation-header">
+              <mat-icon class="violation-icon">{{ getSeverityIcon(violation.severity) }}</mat-icon>
+              <div class="violation-info">
+                <h4>{{ violation.violationType }}</h4>
+                <span class="field-path">Field: {{ violation.field }}</span>
+              </div>
+            </div>
+            <p class="violation-description">{{ violation.description }}</p>
+            <div class="violation-value" *ngIf="violation.value">
+              <strong>Detected Value:</strong> <code>{{ violation.value }}</code>
+            </div>
+            <div class="violation-recommendation">
+              <mat-icon>lightbulb</mat-icon>
+              <span>{{ violation.recommendation }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <!-- Medium Priority Violations -->
+      <mat-expansion-panel 
+        *ngIf="mediumViolations.length > 0" 
+        class="violation-panel medium">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>info</mat-icon>
+            Medium Priority Violations
+            <mat-chip class="severity-badge medium">{{ mediumViolations.length }}</mat-chip>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="violations-list">
+          <div *ngFor="let violation of mediumViolations" class="violation-item medium">
+            <div class="violation-header">
+              <mat-icon class="violation-icon">{{ getSeverityIcon(violation.severity) }}</mat-icon>
+              <div class="violation-info">
+                <h4>{{ violation.violationType }}</h4>
+                <span class="field-path">Field: {{ violation.field }}</span>
+              </div>
+            </div>
+            <p class="violation-description">{{ violation.description }}</p>
+            <div class="violation-recommendation">
+              <mat-icon>lightbulb</mat-icon>
+              <span>{{ violation.recommendation }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
+    <!-- Warnings Section -->
+    <div *ngIf="validationResult.warnings.length > 0" class="warnings-section">
+      <mat-expansion-panel class="warnings-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>report_problem</mat-icon>
+            Warnings for Review
+            <mat-chip class="severity-badge warning">{{ validationResult.warnings.length }}</mat-chip>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="warnings-list">
+          <div *ngFor="let warning of validationResult.warnings" class="warning-item">
+            <mat-icon>info_outline</mat-icon>
+            <div class="warning-content">
+              <strong>{{ warning.field }}</strong>
+              <span>{{ warning.description }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
+    <!-- Compliant State -->
+    <div *ngIf="isCompliant" class="compliant-message">
+      <mat-icon class="success-large-icon">verified_user</mat-icon>
+      <h3>No Compliance Issues Detected</h3>
+      <p>The data passed all PHIPA validation checks. No sensitive information violations were found.</p>
+    </div>
+  </mat-card-content>
+</mat-card>
