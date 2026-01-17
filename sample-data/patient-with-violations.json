@@ -1,0 +1,21 @@
+{
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "birthDate": "1990-08-22",
+  "gender": "female",
+  "phone": "647-555-9876",
+  "email": "jane.smith@example.com",
+  "address": {
+    "street": "456 Oak Avenue",
+    "city": "Ottawa",
+    "province": "Ontario",
+    "postalCode": "K1A 0B1",
+    "country": "Canada"
+  },
+  "mrn": "MRN789012",
+  "sin": "123-456-789",
+  "creditCard": "4532-1234-5678-9012",
+  "driversLicense": "D1234-56789-01234",
+  "healthCard": "9876543210",
+  "active": true
+}
