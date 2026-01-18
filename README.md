@@ -1,34 +1,60 @@
-# Table Builder - Interactive Tables and Grids
+# MediBridge Interoperability Portal
 
-A powerful Angular application that dynamically generates sortable, filterable HTML tables from JSON data uploads. This project demonstrates advanced patterns in dynamic component rendering, data handling, and performance optimization.
+A comprehensive healthcare data interoperability platform built with Angular 21 that transforms clinical data into HL7 FHIR R4 compliant formats while ensuring compliance with privacy regulations including PHIPA (Personal Health Information Protection Act).
 
-## Features
+## Overview
 
-- **JSON File Upload**: Drag-and-drop or browse to upload JSON files
-- **Automatic Table Generation**: Intelligently parses JSON data and creates tables
-- **Smart Type Detection**: Automatically detects and formats data types (string, number, boolean, date)
-- **Sortable Columns**: Click column headers to sort data ascending/descending
-- **Powerful Filtering**: Real-time search across all columns
-- **Pagination**: Handle large datasets with configurable page sizes (10, 25, 50, 100)
-- **Export Functionality**: Export filtered data to JSON or CSV formats
-- **Responsive Design**: Mobile-friendly layout with Angular Material
-- **Performance Optimized**: Efficient rendering for large datasets
+MediBridge streamlines healthcare data integration by providing intelligent conversion of patient data to industry-standard FHIR resources, automated privacy compliance validation, and real-time data quality assessment. Designed for healthcare organizations requiring seamless interoperability with existing eHealth systems.
+
+## Key Features
+
+### FHIR R4 Conversion
+- **Intelligent Field Mapping**: Automatically maps diverse patient data formats to HL7 FHIR R4 Patient resources
+- **Multi-Format Support**: Handles various JSON structures with smart data extraction
+- **Complete Resource Coverage**: Supports identifiers, names, telecom, addresses, demographics, and more
+- **Conversion Audit Trail**: Detailed mapping logs showing field transformations and data sources
+
+### PHIPA Compliance Validation
+- **Privacy Assessment**: Real-time validation against Ontario PHIPA requirements
+- **Consent Management**: Tracks and validates patient consent status
+- **Data Minimization**: Identifies unnecessary PHI collection
+- **Security Compliance**: Validates encryption and access control requirements
+- **Violation Reporting**: Comprehensive reporting of privacy issues with remediation guidance
+
+### Data Quality & Validation
+- **Quality Scoring**: Automated assessment of data completeness and accuracy (0-100 scale)
+- **Field Validation**: Checks for required fields, format compliance, and data integrity
+- **Interactive Visualization**: Material Design interface for reviewing FHIR resources
+- **Export Capabilities**: Download validated FHIR JSON for system integration
+
+### User Experience
+- **Drag-and-Drop Upload**: Intuitive file upload with JSON validation
+- **Real-Time Processing**: Instant conversion and validation feedback
+- **Tabbed Interface**: Organized views for FHIR data and compliance results
+- **Responsive Design**: Healthcare-themed UI optimized for desktop and tablet
 
 ## Technology Stack
 
-- **Angular 21** - Latest Angular framework with standalone components
-- **Angular Material** - Professional UI components
-- **TypeScript 5.9** - Type-safe development
-- **RxJS** - Reactive programming with observables
-- **SCSS** - Advanced styling with Sass
+- **Angular 21** - Modern framework with standalone components and signals
+- **TypeScript 5.9** - Type-safe development with strict mode
+- **Angular Material** - Professional healthcare-themed UI components
+- **RxJS** - Reactive data processing with observables
+- **HL7 FHIR R4** - Healthcare interoperability standard
+- **IHE Standards** - Integration Healthcare Enterprise compliance
+- **SCSS** - Advanced styling with healthcare color scheme
 
 ## Prerequisites
 
 - Node.js (v18 or higher)
+- npm (v9 or higher)
 
 ## Installation
 
-1. Clone or download this repository
+1. Clone the repository:
+```bash
+git clone https://github.com/JaskiratCodeKaur/medibridge-interoperability-portal.git
+cd medibridge-interoperability-portal
+```
 
 2. Install dependencies:
 ```bash
@@ -42,51 +68,75 @@ Start the development server:
 npm start
 ```
 
-The application will open at `http://localhost:4200/`
+The application will be available at `http://localhost:4200/`
 
 ## Usage
 
-### Quick Start
+### Converting Patient Data to FHIR
 
-1. **Upload a JSON File**:
-   - Drag and drop a JSON file into the upload area, or
+1. **Upload Patient Data**:
+   - Drag and drop a JSON file containing patient information, or
    - Click "Choose File" to browse your files
+   - The file will be validated automatically
 
-2. **View Your Data**:
-   - The table will automatically generate with sortable columns
-   - Use the search box to filter data across all columns
-   - Click column headers to sort
+2. **Review FHIR Conversion**:
+   - Switch to the "FHIR Data" tab to view the converted FHIR R4 Patient resource
+   - Examine the detailed mapping log showing field transformations
+   - Check the data quality score and completeness metrics
 
-3. **Export Your Data**:
-   - Click "Export JSON" to download filtered data as JSON
-   - Click "Export CSV" to download as CSV
+3. **Assess Privacy Compliance**:
+   - Navigate to the "Compliance" tab to view PHIPA validation results
+   - Review consent status, security measures, and data minimization practices
+   - Address any identified violations with provided remediation guidance
+
+4. **Export Results**:
+   - Click "Export JSON" to download the FHIR-compliant patient resource
+   - Use the exported data for integration with EHR systems or FHIR servers
 
 ### Supported JSON Formats
 
-The application intelligently handles multiple JSON structures:
+MediBridge intelligently handles diverse patient data structures:
 
-**Array Format** (Recommended):
-```json
-[
-  { "name": "Item 1", "value": 100 },
-  { "name": "Item 2", "value": 200 }
-]
-```
-
-**Object with Array Property**:
+**Standard Patient Format**:
 ```json
 {
-  "data": [
-    { "name": "Item 1", "value": 100 }
+  "patientId": "P12345",
+  "firstName": "John",
+  "lastName": "Doe",
+  "dateOfBirth": "1980-05-15",
+  "gender": "male",
+  "email": "john.doe@example.com",
+  "phone": "555-0123",
+  "address": {
+    "street": "123 Main St",
+    "city": "Toronto",
+    "province": "ON",
+    "postalCode": "M5H 2N2"
+  }
+}
+```
+
+**Alternate Format with Arrays**:
+```json
+{
+  "id": "12345",
+  "name": {
+    "given": ["John", "Paul"],
+    "family": "Doe"
+  },
+  "telecom": [
+    { "system": "email", "value": "john.doe@example.com" }
   ]
 }
 ```
 
-**Single Object**:
+**Batch Processing**:
 ```json
 {
-  "name": "Item 1",
-  "value": 100
+  "patients": [
+    { "patientId": "P001", "firstName": "Jane", "lastName": "Smith" },
+    { "patientId": "P002", "firstName": "Bob", "lastName": "Johnson" }
+  ]
 }
 ```
 
@@ -96,119 +146,131 @@ The application intelligently handles multiple JSON structures:
 src/
 ├── app/
 │   ├── components/
-│   │   ├── file-upload/          # File upload component
-│   │   │   ├── file-upload.component.ts
-│   │   │   ├── file-upload.component.html
-│   │   │   └── file-upload.component.scss
-│   │   └── dynamic-table/        # Dynamic table component
-│   │       ├── dynamic-table.component.ts
-│   │       ├── dynamic-table.component.html
-│   │       └── dynamic-table.component.scss
+│   │   ├── medibridge/                    # Main portal component
+│   │   │   ├── medibridge.component.ts
+│   │   │   ├── medibridge.component.html
+│   │   │   └── medibridge.component.scss
+│   │   ├── fhir-display/                  # FHIR resource visualization
+│   │   │   ├── fhir-display.component.ts
+│   │   │   ├── fhir-display.component.html
+│   │   │   └── fhir-display.component.scss
+│   │   ├── compliance-display/            # PHIPA compliance reporting
+│   │   │   ├── compliance-display.component.ts
+│   │   │   ├── compliance-display.component.html
+│   │   │   └── compliance-display.component.scss
+│   │   └── file-upload/                   # Legacy file upload component
+│   │       ├── file-upload.component.ts
+│   │       ├── file-upload.component.html
+│   │       └── file-upload.component.scss
 │   ├── models/
-│   │   └── table-data.model.ts   # Data models
+│   │   ├── fhir.model.ts                  # FHIR R4 interfaces
+│   │   ├── phipa.model.ts                 # PHIPA compliance models
+│   │   └── table-data.model.ts            # Data structure models
 │   ├── services/
-│   │   └── table-data.service.ts # Data processing service
-│   ├── app.ts                    # Main app component
-│   ├── app.html
-│   └── app.scss
-├── styles.scss                   # Global styles & Material theme
-└── main.ts                       # Application bootstrap
+│   │   ├── fhir-converter.service.ts      # JSON to FHIR conversion
+│   │   ├── phipa-validation.service.ts    # Privacy compliance validation
+│   │   ├── interoperability.service.ts    # Orchestration service
+│   │   └── table-data.service.ts          # Legacy data service
+│   ├── app.ts                             # Root component
+│   ├── app.html                           # Root template
+│   ├── app.scss                           # Global styles
+│   └── app.config.ts                      # App configuration
+├── sample-data/                           # Test data files
+│   ├── patient-compliant.json             # Valid PHIPA-compliant data
+│   ├── patient-with-violations.json       # Data with privacy issues
+│   ├── patient-alternate-format.json      # Different JSON structure
+│   └── patients-batch.json                # Multiple patient records
+└── index.html
 ```
 
-## Key Features Explained
+## Standards Compliance
 
-### Dynamic Component Rendering
+### HL7 FHIR R4
+- Full implementation of Patient resource structure
+- Support for Identifier, HumanName, ContactPoint, Address resources
+- CodeableConcept and Coding for standardized terminology
+- Period tracking for temporal data validity
 
-Instead of hardcoding table structures, this app dynamically generates components based on data:
+### IHE Integration Profiles
+- Patient Demographics Query (PDQ)
+- Cross-Enterprise Document Sharing (XDS)
+- Patient Identifier Cross-referencing (PIX)
 
-```typescript
-// Automatically detects column types
-private detectType(data: any[], key: string): 'string' | 'number' | 'boolean' | 'date'
+### PHIPA Requirements
+- Consent management and tracking
+- Data minimization validation
+- Security and encryption compliance
+- Access control verification
+- Breach notification readiness
 
-// Generates columns dynamically
-const columns: TableColumn[] = Array.from(allKeys).map(key => ({
-  key,
-  label: this.formatLabel(key),
-  type: this.detectType(data, key)
-}));
-```
+## Architecture
 
-### Performance Optimization
+### Service Layer
 
-- **Virtual Scrolling**: Material table with pagination for large datasets
-- **Change Detection**: OnPush strategy where applicable
-- **Lazy Loading**: Modules loaded as needed
-- **Debounced Filtering**: Efficient search implementation
+**FhirConverterService**
+- Converts generic JSON to FHIR R4 Patient resources
+- Intelligent field mapping with multiple naming convention support
+- UUID generation for FHIR identifiers
+- Comprehensive logging of data transformations
 
-### Angular Material Integration
+**PhipaValidationService**
+- Real-time privacy compliance assessment
+- Consent status validation
+- Security measure verification
+- Data minimization checks
+- Violation detection and reporting
 
-Utilizes professional Material Design components:
-- `MatTable` - Data table with sorting
-- `MatSort` - Column sorting
-- `MatPaginator` - Pagination controls
-- `MatFormField` - Filter input
-- `MatButton` - Action buttons
-- `MatIcon` - Icons throughout
-- `MatToolbar` - Application header
-- `MatCard` - Content containers
+**InteroperabilityService**
+- Orchestrates conversion and validation workflows
+- Data quality scoring algorithm
+- Error handling and recovery
+- Results aggregation
 
-## Building
+### Component Architecture
 
-To build the project run:
+**MediBridgeComponent**
+- Main container with file upload handling
+- Tab-based navigation between views
+- Real-time processing feedback
+- Error notification system
 
-```bash
-ng build
-```
+**FhirDisplayComponent**
+- FHIR resource visualization with JSON formatting
+- Interactive mapping log explorer
+- Field-level transformation details
+- Export functionality
 
-```bash
-npm run build
-```
+**ComplianceDisplayComponent**
+- Privacy compliance dashboard
+- Violation severity indicators
+- Remediation guidance
+- Consent status tracking
 
-Production files will be in the `dist/` directory.
+## Data Quality Scoring
 
-## Available Scripts
+MediBridge calculates a comprehensive data quality score (0-100) based on:
 
-- `npm start` - Start development server
-- `npm run build` - Build for production
-- `npm run watch` - Build and watch for changes
-- `npm test` - Run unit tests
+- **Completeness (40%)**: Presence of required and recommended fields
+- **Format Validity (30%)**: Proper formatting of dates, phones, emails, postal codes
+- **Consistency (20%)**: Data coherence and logical validation
+- **Standardization (10%)**: Use of standard terminologies and codes
 
-## Learning Outcomes
+## Security & Privacy
 
-This project teaches:
+- Client-side processing - no data transmitted to external servers
+- JSON validation prevents malicious file uploads
+- Compliance validation aligns with PHIPA, HIPAA principles
+- Export functionality for secure data transfer
 
-1. **Dynamic Component Rendering** - Generate UI based on data structure
-2. **Data Type Detection** - Intelligent parsing and formatting
-3. **Performance Optimization** - Handle large datasets efficiently
-4. **Angular Material** - Professional UI component library
-5. **Reactive Programming** - RxJS observables and subjects
-6. **File Processing** - Handle file uploads and parsing
-7. **Data Export** - Generate JSON and CSV files
-8. **Responsive Design** - Mobile-first approach
+## Sample Data
 
+Test files are provided in the `sample-data/` directory:
 
-## Contributing
-
-Feel free to fork this project and add your own enhancements:
-- Add more data type detections
-- Implement column filtering
-- Add chart visualizations
-- Support more file formats (CSV, Excel)
+- `patient-compliant.json` - Fully compliant patient record
+- `patient-with-violations.json` - Record with PHIPA violations for testing
+- `patient-alternate-format.json` - Different JSON structure demonstration
+- `patients-batch.json` - Multiple patient records for batch processing
 
 ## License
 
-MIT License - feel free to use this project for learning and commercial purposes.
-
-## Future Enhancements
-
-- [ ] Column-specific filters
-- [ ] Export to Excel
-- [ ] Import from CSV
-- [ ] Data visualization charts
-- [ ] Custom column ordering
-- [ ] Save/load table configurations
-- [ ] Theme customization
-- [ ] Print functionality
-
-
-
+This project is for educational and demonstration purposes.
